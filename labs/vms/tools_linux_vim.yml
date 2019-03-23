@@ -1,0 +1,7 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - include_role:
+        name: tools
+        tasks_from: linux_vim

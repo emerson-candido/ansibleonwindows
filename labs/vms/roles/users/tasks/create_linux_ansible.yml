@@ -2,8 +2,26 @@
 - name: Create ansible user on Linux VMs
   user:
     name: "ansible"
-    password: "$6$mypassword$7O.2AFFslMaPRUVrL6kA1NRR1btaUQiBgIleCnCGvGamLBRC3JLTrzONmR2sQWa53WmDlE1i/PFgdK14UoPQN1"
+    password: "$6$mysecretsalt$xLIrI.Wj1YGss.3somzzIjVYr7XdUkWT1PqRAXw2sosrDGk1JaW1l7PAh6a2snUF89gzTkvy5zdG1.GMnuWwz."
     create_home: yes
     groups: "wheel"
   become: yes
-    
+
+- name: Remove existing ssh pwd auth settings
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: absent
+    regexp: '^PasswordAuthentication'
+  become: yes
+
+- name: Set ssh password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: 'PasswordAuthentication yes'
+  become: yes
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  become: yes

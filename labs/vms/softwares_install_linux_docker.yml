@@ -1,0 +1,7 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - include_role:
+        name: softwares
+        tasks_from: install_linux_docker

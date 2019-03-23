@@ -1,0 +1,38 @@
+---
+- name: Install yum-utils
+  yum:
+    name: yum-utils
+    state: installed
+  become: yes
+
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: installed
+  become: yes
+
+- name: Install lvm2
+  yum:
+    name: lvm2
+    state: installed
+  become: yes
+
+- name: Add docker-ce repository
+  yum_repository:
+    name: docker-ce
+    description: "Docker CE"
+    baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+  become: yes
+
+- name: Install docker-ce
+  yum:
+    name: docker-ce
+    state: installed
+  become: yes
+
+- name: Add ansible user to docker group
+  user:
+    name: ansible
+    groups: docker
+    append: yes
+  become: yes
