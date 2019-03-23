@@ -1,0 +1,9 @@
+---
+- name: Create ansible user on Linux VMs
+  user:
+    name: "ansible"
+    password: "$6$mypassword$7O.2AFFslMaPRUVrL6kA1NRR1btaUQiBgIleCnCGvGamLBRC3JLTrzONmR2sQWa53WmDlE1i/PFgdK14UoPQN1"
+    create_home: yes
+    groups: "wheel"
+  become: yes
+    

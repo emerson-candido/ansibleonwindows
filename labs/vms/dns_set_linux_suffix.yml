@@ -1,0 +1,7 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - include_role:
+        name: dns
+        tasks_from: set_linux_suffix

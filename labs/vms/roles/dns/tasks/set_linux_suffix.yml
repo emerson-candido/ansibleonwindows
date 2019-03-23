@@ -1,0 +1,15 @@
+---
+- name: Set DNS suffix on Linux VMs
+  block:
+  - name: Remove exiting suffix
+    lineinfile:
+      path: /etc/resolv.conf
+      state: absent
+      regexp: '^search'
+    become: yes
+
+  - name: ADD properly suffix
+    lineinfile:
+      path: /etc/resolv.conf
+      line: 'search ansibleonwindows.local'
+    become: yes

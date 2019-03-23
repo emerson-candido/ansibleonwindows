@@ -1,0 +1,22 @@
+---
+- name: Default bootstrap of Linux VM
+  block:
+    - name: Add default softwares
+      include_role:
+        name: softwares
+        tasks_from: install_linux_default
+
+    - name: Set DNS primary server
+      include_role:
+        name: dns
+        tasks_from: set_linux_server_primary
+
+    - name: Set DNS suffix
+      include_role:
+        name: dns
+        tasks_from: set_linux_suffix
+
+    - name: Create ansible user
+      include_role:
+        name: users
+        tasks_from: create_linux_ansible

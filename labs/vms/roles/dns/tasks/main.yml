@@ -1,0 +1,3 @@
+---
+- name: Default task
+  import_tasks: set_linux_server_primary

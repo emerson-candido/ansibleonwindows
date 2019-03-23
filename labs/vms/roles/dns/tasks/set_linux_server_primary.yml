@@ -1,0 +1,15 @@
+---
+- name: Set DNS primary server on Linux VMs
+  block:
+  - name: Remove existing DNS server settings
+    lineinfile:
+      path: /etc/resolv.conf
+      state: absent
+      regexp: '^nameserver'
+    become: yes
+  
+  - name: ADD properly DNS server
+    lineinfile:
+      path: /etc/resolv.conf
+      line: 'nameserver 192.168.75.10'
+    become: yes
