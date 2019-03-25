@@ -1,5 +1,5 @@
 ---
-- name: Default bootstrap of Linux VM
+- name: Default bootstrap for Linux VMs
   block:
     - name: Create ansible user
       include_role:

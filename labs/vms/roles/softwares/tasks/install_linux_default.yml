@@ -34,3 +34,9 @@
     name: git
     state: installed
   become: yes
+
+- name: Install telnet
+  yum:
+    name: telnet
+    state: installed
+  become: yes

@@ -4,3 +4,17 @@
     name: ansible
     state: installed
   become: yes
+
+- name: Install pip
+  yum:
+    name: python-pip
+    state: installed
+  become: yes
+
+- name: Upgrade pip
+  command: pip install --upgrade pip
+  become: yes
+
+- name: install pywinrm
+  command: "pip install 'pywinrm>=0.3.0'"
+  become: yes

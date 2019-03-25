@@ -18,10 +18,7 @@
   become: yes
 
 - name: Add docker-ce repository
-  yum_repository:
-    name: docker-ce
-    description: "Docker CE"
-    baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   become: yes
 
 - name: Install docker-ce
@@ -35,4 +32,29 @@
     name: ansible
     groups: docker
     append: yes
+  become: yes
+
+- name: Start docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Insall docker pip
+  command: pip install docker
+  become: yes
+
+- name: Clone AWX repository
+  git:
+    repo: 'https://github.com/ansible/awx.git'
+    dest: /awx/
+    version: devel
+    clone: yes
+  become: yes
+
+- name: Start AWX deployment
+  command: ansible-playbook -i inventory install.yml
+  args:
+    chdir: /awx/installer/
   become: yes

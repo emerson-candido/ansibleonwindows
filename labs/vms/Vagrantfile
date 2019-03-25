@@ -1,4 +1,21 @@
 Vagrant.configure("2") do |config|
+  config.vm.define "dc01" do |config|
+		 config.vm.box = "gusztavvargadr/windows-server"
+  	 config.vm.box_version = "1809.0.1901-standard-core"
+    config.vm.hostname = 'dc01'
+    config.vm.network :private_network, ip: "192.168.75.10"
+		config.vm.provision "shell", privileged: "true", powershell_elevated_interactive: "true", path: "roles/bootstrap/files/windows_default.ps1"
+		config.vm.provision "shell", privileged: "true", powershell_elevated_interactive: "true", path: "roles/tools/files/windows_domain.ps1"
+
+	config.vm.provider :virtualbox do |v|
+  	v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--memory", 1536]
+    v.customize ["modifyvm", :id, "--name", "dc01"]
+		end
+  end
+end
+
+Vagrant.configure("2") do |config|
   config.vm.define "ansible01" do |config|
     config.vm.box = "centos/7"
     config.vm.hostname = 'ansible01'
@@ -22,7 +39,7 @@ Vagrant.configure("2") do |config|
 end
 
 Vagrant.configure("2") do |config|
-  config.vm.define "awx01" do |config|
+  config.vm.define "awx01", autostart: false do |config|
     config.vm.box = "centos/7"
     config.vm.hostname = 'awx01'
     config.vm.network :private_network, ip: "192.168.75.25"
@@ -30,6 +47,10 @@ Vagrant.configure("2") do |config|
 	config.vm.provision :ansible do |ansible|
 		ansible.vault_password_file = ".vault_secret.yml"
 		ansible.playbook = "bootstrap_linux_default.yml"
+		end
+
+	config.vm.provision :ansible do |ansible|
+		ansible.playbook = "softwares_install_linux_ansible.yml"
 		end
 
 	config.vm.provision :ansible do |ansible|
