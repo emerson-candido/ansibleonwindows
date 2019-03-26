@@ -1,15 +1,67 @@
-#Create the domain ansibleonwindows.local
-Import-Module "Servermanager" #For Add-WindowsFeature
-Add-WindowsFeature AD-Domain-Services, DNS -IncludeManagementTools
+$domain = 'ansibleonwindows.local'
+$netbiosDomain = 'ansibleonwin'
+$safeModeAdminstratorPassword = ConvertTo-SecureString 'ansible@123' -AsPlainText -Force
 
-$netbiosname = 'AnsibleOnWin'
-$fqdomname = 'ansibleonwindows.local'
+# make sure the Administrator has a password that meets the minimum Windows
+# password complexity requirements (otherwise the AD will refuse to install).
+echo 'Resetting the Administrator account password and settings...'
+Set-LocalUser `
+    -Name Administrator `
+    -AccountNeverExpires `
+    -Password $safeModeAdminstratorPassword `
+    -PasswordNeverExpires:$true `
+    -UserMayChangePassword:$true
 
-$SafePassPlain = 'ansible@123'
-$SafePass = ConvertTo-SecureString -string $SafePassPlain `
-    -AsPlainText -force
+echo 'Disabling the Administrator account (we only use the vagrant account)...'
+Disable-LocalUser `
+    -Name Administrator
 
-Install-ADDSForest -DomainName $fqdomname -DomainNetBIOSName $netbiosname `
-    -SafemodeAdministratorPassword $SafePass -SkipAutoConfigureDNS -SkipPreChecks `
-    -InstallDNS:$true `
+echo 'Installing the AD services and administration tools...'
+Install-WindowsFeature AD-Domain-Services,RSAT-AD-AdminCenter,RSAT-ADDS-Tools
+
+echo 'Installing the AD forest (be patient, this will take more than 30m to install)...'
+Import-Module ADDSDeployment
+Install-ADDSForest `
+    -InstallDns `
+    -CreateDnsDelegation:$false `
+    -ForestMode 'Win2012R2' `
+    -DomainMode 'Win2012R2' `
+    -DomainName $domain `
+    -DomainNetbiosName $netbiosDomain `
+    -SafeModeAdministratorPassword $safeModeAdminstratorPassword `
+    -NoRebootOnCompletion `
     -Force
+
+# wait until we can access the AD. this is needed to prevent errors like:
+#   Unable to find a default server with Active Directory Web Services running.
+while ($true) {
+	try {
+  	Get-ADDomain | Out-Null
+    break
+  } catch {
+  	Start-Sleep -Seconds 10
+	}
+}
+
+$adDomain = Get-ADDomain
+$domain = $adDomain.DNSRoot
+$domainDn = $adDomain.DistinguishedName
+$usersAdPath = "CN=Users,$domainDn"
+$password = ConvertTo-SecureString -AsPlainText 'ansible@123' -Force
+
+# add the vagrant user to the Enterprise Admins group.
+# NB this is needed to install the Enterprise Root Certification Authority.
+Add-ADGroupMember `
+	-Identity 'Enterprise Admins' `
+	-Members "CN=vagrant,$usersAdPath"
+
+# set the Administrator password.
+# NB this is also an Domain Administrator account.
+Set-ADAccountPassword `
+	-Identity "CN=Administrator,$usersAdPath" `
+	-Reset `
+	-NewPassword $password
+
+Set-ADUser `
+	-Identity "CN=Administrator,$usersAdPath" `
+	-PasswordNeverExpires $true
