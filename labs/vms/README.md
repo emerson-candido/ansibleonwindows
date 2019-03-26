@@ -53,19 +53,19 @@ The diagram below describes the structure of VMs provided to this lab:
 
 The table below describes the list of VMs that are predicted to be provisioned:
 
-		 +-----------+----------------+---------+-----------------------------+
-		 | HOSTNAME  |  IP Address    |  Roles  | SO Version                  |
-		 +-----------+----------------+---------+-----------------------------+
-		 | DC01      |  192.168.75.10 | DC, DNS | Win Server 2019 Server Core |                   
-		 +-----------+----------------+---------+-----------------------------+
-		 | ANSIBLE01 |  192.168.75.20 | ANSIBLE | CentOS 7.6                  |
-		 +-----------+----------------+---------+-----------------------------+
-		 | AWX01     |  192.168.75.25 | AWX01   | CentOS 7.6                  | 
-		 +-----------+----------------+---------+-----------------------------+
-		 | SRV01     |  192.168.75.30 | SERVER  | Win Server 2019 Server Core |                  
-		 +-----------+----------------+---------+-----------------------------+
-		 | SRV02     |  192.168.75.35 | SERVER  | Win Server 2019 Server Core |                  
-		 +-----------+----------------+---------+-----------------------------+
+		 +-----------+----------------+---------+-----------------------------+----------+
+		 | HOSTNAME  |  IP Address    |  Roles  | SO Version                  |  Memory  |
+		 +-----------+----------------+---------+-----------------------------+----------|
+		 | DC01      |  192.168.75.10 | DC, DNS | Win Server 2019 Server Core |  2048MB  |               
+		 +-----------+----------------+---------+-----------------------------+----------+
+		 | ANSIBLE01 |  192.168.75.20 | ANSIBLE | CentOS 7.6                  |   512MB  |
+		 +-----------+----------------+---------+-----------------------------+----------+
+		 | AWX01     |  192.168.75.25 | AWX01   | CentOS 7.6                  |   512MB  |
+		 +-----------+----------------+---------+-----------------------------+----------+
+		 | SRV01     |  192.168.75.30 | SERVER  | Win Server 2019 Server Core |		512MB  |               
+		 +-----------+----------------+---------+-----------------------------+----------+
+		 | SRV02     |  192.168.75.35 | SERVER  | Win Server 2019 Server Core |		512MB  |               
+		 +-----------+----------------+---------+-----------------------------+----------+
 
 
 ## 1.3 Authentication
@@ -91,14 +91,20 @@ Before start the creation of your enviroment, it is required to evaluate if your
 
 ## 2.1.1 Memory
 
+The topic [1.2 VMs](#12-VMs) provides details about memory requirements for each VM, therefore, considering the size, it´s recommeded a minimal of8GB of memory on your host computer.
+
 
 ## 2.1.2 Disk
+
+The virtual machines are configured on Vagrant to be created on VirtualBox using dynamic disks, therefore, the initial size are predicted to allocated 10GB, therefore, during the utilization of virtual machines more data can be required to be allocated, therefore, at minimal of 20GB is required.
 
 
 ## 2.1.3 VirtualBox
 
 
+
 ## 2.1.4 Vagrant
+	-	vagrant plugin install vagrant-reload
 
 
 ## 2.1.4.1 Vagrant installation
