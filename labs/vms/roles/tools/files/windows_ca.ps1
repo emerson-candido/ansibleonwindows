@@ -20,6 +20,8 @@ Install-AdcsCertificationAuthority `
     -Force
 
 # export the CA certificate to the Vagrant project directory, so it can be used by other machines.
+$check=Get-Item -Path c:\vagrant\certs
+IF($check){Remove-Item -Path c:\vagrant\certs -recurse -force}
 mkdir -Force C:\vagrant\certs | Out-Null
 dir Cert:\LocalMachine\My -DnsName $caCommonName `
     | Export-Certificate -FilePath "C:\vagrant\certs\$($caCommonName -replace ' ','').der" `
