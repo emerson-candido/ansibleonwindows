@@ -231,3 +231,7 @@ The script is predict to cover the following steps:
 	- Create the VM AWX01
 	- Create the VM SRV01
 	- Create the VM SRV02
+
+Each step of script is described at this documentation, therefore, in case you prefer build the lab environment without the script assistance, please, checheck previous topics.
+
+After those tasks are completed, you can start the trainning session.

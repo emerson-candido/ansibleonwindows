@@ -5,6 +5,8 @@ This page contains information about modules that will be covered at this course
 Table of contents:
 
 - [1.0 Introduction](#10-introduction)
+	- [1.1 Git first steps](#11-git-first-steps)
+	- [1.2 Linux first steps](12-linux-first-steps)	
 - [2.0 Lab environment](#20-labenvironment)
 - [3.0 Getting started with Ansible](#30-getting-started)
 	- [3.1 Why Ansible](#31-why-ansible)
