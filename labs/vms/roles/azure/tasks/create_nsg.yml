@@ -1,0 +1,22 @@
+---
+- name: Network Security Groups
+  block:
+  - name: Create Network Security Group {{ AZURE_NSG_DMZ_NAME }}
+    azure_rm_securitygroup:
+      name: '{{ AZURE_NSG_DMZ_NAME }}'
+      resource_group: '{{ AZURE_RG_NAME }}'
+    when: >
+      AZURE_NSG_DMZ_NAME is defined and
+      AZURE_RG_NAME is defined
+
+  - name: Create Network Security Group {{ AZURE_NSG_INTERNAL_NAME }}
+    azure_rm_securitygroup:
+      name: '{{ AZURE_NSG_INTERNAL_NAME }}'
+      resource_group: '{{ AZURE_RG_NAME }}'
+    when: >
+      AZURE_NSG_INTERNAL_NAME is defined and
+      AZURE_RG_NAME is defined
+  when: >
+    AZURE_NSG_DMZ_NAME is defined and
+    AZURE_NSG_INTERNAL_NAME and
+    AZURE_RG_NAME is defined

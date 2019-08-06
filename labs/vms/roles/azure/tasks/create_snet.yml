@@ -1,0 +1,33 @@
+---
+- name: Subnets
+  block:
+  - name: Create Virtal Network DMZ {{ AZURE_SNET_DMZ_NAME }}
+    azure_rm_subnet:
+      name: '{{ AZURE_SNET_DMZ_NAME }}'
+      address_prefix_cidr: '{{ AZURE_SNET_DMZ_CIDR }}'
+      virtual_network_name: '{{ AZURE_VNET_NAME }}'
+      resource_group: '{{ AZURE_RG_NAME }}'
+    when: >
+      AZURE_SNET_DMZ_NAME is defined and
+      AZURE_SNET_DMZ_CIDR is defined and
+      AZURE_VNET_NAME is defined and
+      AZURE_RG_NAME is defined
+
+  - name: Create Virtal Network Internal {{ AZURE_SNET_INTERNAL_NAME }}
+    azure_rm_subnet:
+      name: '{{ AZURE_SNET_INTERNAL_NAME }}'
+      address_prefix_cidr: '{{ AZURE_SNET_INTERNAL_CIDR }}'
+      virtual_network_name: '{{ AZURE_VNET_NAME }}'
+      resource_group: '{{ AZURE_RG_NAME }}'
+    when: >
+      AZURE_SNET_INTERNAL_NAME is defined and
+      AZURE_SNET_INTERNAL_CIDR is defined and
+      AZURE_VNET_NAME is defined and
+      AZURE_RG_NAME is defined
+  when: >
+    AZURE_SNET_DMZ_NAME is defined and
+    AZURE_SNET_DMZ_CIDR is defined and
+    AZURE_SNET_INTERNAL_NAME is defined and
+    AZURE_SNET_INTERNAL_CIDR is defined and
+    AZURE_VNET_NAME is defined and
+    AZURE_RG_NAME is defined

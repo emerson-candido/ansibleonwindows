@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  environment:
+    AZURE_SUBSCRIPTION_ID: '{{ SUBSCRIPTION_ID }}'
+    AZURE_CLIENT_ID: '{{ CLIENT_ID }}'
+    AZURE_SECRET: '{{ SECRET }}'
+    AZURE_TENANT: '{{ TENANT }}'
+  
+  tasks:
+    - include_role:
+        name: azure
+        tasks_from: create_vnet

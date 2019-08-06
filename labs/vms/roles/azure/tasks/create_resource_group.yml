@@ -1,0 +1,10 @@
+---
+- name: Resource Group
+  block:
+  - name: Create Resource Group {{ AZURE_RG_NAME }}
+    azure_rm_resourcegroup:
+      name: '{{ AZURE_RG_NAME }}'
+      location: '{{ AZURE_RG_LOCATION }}'
+  when: >
+    AZURE_RG_NAME is defined and
+    AZURE_RG_LOCATION is defined

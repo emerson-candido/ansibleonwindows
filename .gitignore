@@ -3,3 +3,5 @@
 .vagrant
 inventory*
 labs/vms/certs/
+.secret-*
+.~*.pptx

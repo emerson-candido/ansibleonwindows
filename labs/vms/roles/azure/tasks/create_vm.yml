@@ -1,0 +1,33 @@
+---
+- name: Azure Virtual Machine
+  block: 
+  - name: Resource Groups
+    include_role:
+      name: azure
+      tasks_from: create_resource_group
+
+  - name: Network Security Groups
+    include_role:
+      name: azure
+      tasks_from: create_nsg
+
+  - name: Network Virtual Networks
+    include_role:
+      name: azure
+      tasks_from: create_vnet
+
+  - name: Subnets
+    include_role:
+      name: azure
+      tasks_from: create_snet
+
+  when: >
+    AZURE_RG_NAME is defined and
+    AZURE_RG_LOCATION is defined and
+    AZURE_VNET_NAME and
+    AZURE_VNET_LOCATION and
+    AZURE_VNET_CIDR and
+    AZURE_SNET_DMZ_NAME is defined and
+    AZURE_SNET_DMZ_CIDR is defined and
+    AZURE_SNET_INTERNAL_NAME is defined and
+    AZURE_SNET_INTERNAL_CIDR is defined

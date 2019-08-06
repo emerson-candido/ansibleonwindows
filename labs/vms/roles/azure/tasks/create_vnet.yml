@@ -1,0 +1,13 @@
+---
+- name: Virtual Network
+  block:
+  - name: Create Virtual Network {{ AZURE_VNET_NAME }}
+    azure_rm_virtualnetwork:
+      name: '{{ AZURE_VNET_NAME }}'
+      location: '{{ AZURE_VNET_LOCATION }}'
+      address_prefixes_cidr: '{{ AZURE_VNET_CIDR }}'
+      resource_group: '{{ AZURE_RG_NAME }}'
+  when: >
+    AZURE_VNET_NAME and
+    AZURE_VNET_LOCATION and
+    AZURE_VNET_CIDR
